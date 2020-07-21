@@ -64,7 +64,7 @@ class App extends Component {
     return clarifaiFaces.map(clarifaiFace => {
       const {
         region_info: { bounding_box }
-      } = clarifaiFace.region_info.bounding_box;
+      } = clarifaiFace;
 
       return {
         leftCol: bounding_box.left_col * width,
