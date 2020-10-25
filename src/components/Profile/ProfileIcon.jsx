@@ -6,6 +6,8 @@ import {
   DropdownItem
 } from 'reactstrap';
 
+import './ProfileIcon.css';
+
 class ProfileIcon extends React.Component {
   constructor(props) {
     super(props);
@@ -36,7 +38,8 @@ class ProfileIcon extends React.Component {
             />
           </DropdownToggle>
           <DropdownMenu
-            className='b--transparent shadow-5'
+            right
+            className='b--transparent shadow-5 dropdown-menu-right'
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.5)'
             }}
