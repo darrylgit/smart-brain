@@ -96,28 +96,34 @@ class App extends Component {
   };
 
   calculateFaceLocation = data => {
-    const clarifaiFaces = data.outputs[0].data.regions;
+    if (data && data.outputs) {
+      const clarifaiFaces = data.outputs[0].data.regions;
 
-    const image = document.getElementById('inputimage');
-    const width = Number(image.width);
-    const height = Number(image.height);
+      const image = document.getElementById('inputimage');
+      const width = Number(image.width);
+      const height = Number(image.height);
 
-    return clarifaiFaces.map(clarifaiFace => {
-      const {
-        region_info: { bounding_box }
-      } = clarifaiFace;
+      return clarifaiFaces.map(clarifaiFace => {
+        const {
+          region_info: { bounding_box }
+        } = clarifaiFace;
 
-      return {
-        leftCol: bounding_box.left_col * width,
-        topRow: bounding_box.top_row * height,
-        rightCol: width - bounding_box.right_col * width,
-        bottomRow: height - bounding_box.bottom_row * height
-      };
-    });
+        return {
+          leftCol: bounding_box.left_col * width,
+          topRow: bounding_box.top_row * height,
+          rightCol: width - bounding_box.right_col * width,
+          bottomRow: height - bounding_box.bottom_row * height
+        };
+      });
+    }
+
+    return;
   };
 
   displayFaceBoxes = boxes => {
-    this.setState({ boxes });
+    if (boxes) {
+      this.setState({ boxes });
+    }
   };
 
   onInputChange = event => {
@@ -128,7 +134,10 @@ class App extends Component {
     this.setState({ imageUrl: this.state.input });
     fetch('http://localhost:3000/imageurl', {
       method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: window.sessionStorage.getItem('token')
+      },
       body: JSON.stringify({
         input: this.state.input
       })
@@ -138,7 +147,10 @@ class App extends Component {
         if (response) {
           fetch('http://localhost:3000/image', {
             method: 'put',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: window.sessionStorage.getItem('token')
+            },
             body: JSON.stringify({
               id: this.state.user.id
             })
